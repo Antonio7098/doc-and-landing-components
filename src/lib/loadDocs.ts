@@ -1,5 +1,8 @@
 import matter from 'gray-matter';
+import { ensureBuffer } from './ensureBuffer';
 import type { DocPage } from '../config/docs.config';
+
+ensureBuffer();
 
 export interface LoadDocsOptions {
   modules: Record<string, unknown>;
@@ -15,7 +18,14 @@ export function loadDocs(options: LoadDocsOptions): DocPage[] {
     const { data, content } = matter(rawContent);
     
     const relativePath = path.replace(contentPath, '').replace('.md', '');
-    const slug = relativePath.split('/').map(p => p.toLowerCase()).join('/');
+    let slug = relativePath
+      .split('/')
+      .map(p => p.toLowerCase())
+      .join('/');
+
+    if (slug === 'index') {
+      slug = '';
+    }
 
     docs.push({
       slug: `/${slug}`,

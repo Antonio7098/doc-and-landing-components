@@ -1,17 +1,21 @@
+import { Buffer } from 'buffer';
+(globalThis as any).Buffer = Buffer;
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './styles/index.css'
 import App from './App.tsx'
 import LandingDemo from './LandingDemo.tsx'
 
-import { Buffer } from 'buffer';
-(window as any).Buffer = Buffer;
-
-// Switch between demos: 'docs' or 'landing'
-const DEMO_MODE = (new URLSearchParams(window.location.search).get('demo') || 'docs') as 'docs' | 'landing';
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {DEMO_MODE === 'landing' ? <LandingDemo /> : <App />}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/docs" element={<App />} />
+        <Route path="/landing" element={<LandingDemo />} />
+        <Route path="/" element={<App />} />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>,
 )

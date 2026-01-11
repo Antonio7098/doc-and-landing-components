@@ -1,5 +1,8 @@
 import matter from 'gray-matter';
+import { ensureBuffer } from './ensureBuffer';
 import type { DocPage, NavItem } from '../config/docs.config';
+
+ensureBuffer();
 
 const modules = import.meta.glob('../content/**/*.md', { query: '?raw', import: 'default', eager: true });
 
