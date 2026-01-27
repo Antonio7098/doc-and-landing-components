@@ -43,6 +43,6 @@ jobs:
           fi
 
       - name: Publish to npm
+        run: npm publish --access public --provenance --registry https://registry.npmjs.org
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
