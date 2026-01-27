@@ -90,12 +90,23 @@ function App() {
   installation: `
 # Installation
 
-Get started with the documentation template in minutes.
+This guide covers how to install and configure UCP for your project.
 
-## Prerequisites
+## Requirements
 
-- Node.js 18+
-- npm or yarn
+=== "Rust"
+    - **Rust**: 1.70 or later
+    - **Cargo**: Latest stable version
+
+=== "Python"
+    - **Python**: 3.8 or later
+    - **pip**: Latest stable version
+
+=== "JavaScript"
+    - **Node.js**: 16 or later
+    - **npm**: Latest stable version
+
+## Adding UCP to Your Project
 
 ## Install Dependencies
 
@@ -207,6 +218,22 @@ function MyDocPage() {
 - Learn about [customization](/guides/customization)
 - Explore the [component library](/components)
 - Read the [API reference](/api/configuration)
+
+## Framework Examples
+
+Pick the instructions for your preferred framework:
+
+=== "Next.js"
+    - **Command**: npx create-next-app docs-demo --ts
+    - **Docs Page**: pages/docs.tsx
+
+=== "Vite"
+    - **Command**: npm create vite@latest docs-demo -- --template react-ts
+    - **Docs Page**: src/App.tsx
+
+=== "Remix"
+    - **Command**: npx create-remix@latest
+    - **Docs Page**: app/routes/docs.tsx
 `,
 
   components: `# Components

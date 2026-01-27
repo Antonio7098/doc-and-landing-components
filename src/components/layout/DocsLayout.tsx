@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 import { cn } from '../../lib/utils';
 import { Header } from './Header';
-import { Sidebar } from './Sidebar';
+import { Sidebar } from './Sidebar-backup';
 
 export interface DocsLayoutProps {
   children: ReactNode;
@@ -9,6 +9,7 @@ export interface DocsLayoutProps {
   showSidebar?: boolean;
   showToc?: boolean;
   tocContent?: ReactNode;
+  docs?: import('../../config/docs.config').DocPage[];
 }
 
 export function DocsLayout({
@@ -17,13 +18,14 @@ export function DocsLayout({
   showSidebar = true,
   showToc = true,
   tocContent,
+  docs,
 }: DocsLayoutProps) {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
       <div className="flex">
-        {showSidebar && <Sidebar />}
+        {showSidebar && <Sidebar docs={docs} />}
         
         <main
           className={cn(

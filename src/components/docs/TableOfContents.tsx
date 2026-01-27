@@ -55,8 +55,8 @@ export function TableOfContents({ items, className }: TableOfContentsProps) {
     <nav className={cn('space-y-1', className)}>
       <p className="text-sm font-semibold text-foreground mb-3">On this page</p>
       <ul className="space-y-1 text-sm">
-        {items.map((item) => (
-          <li key={item.id}>
+        {items.map((item, index) => (
+          <li key={`${item.id}-${index}`}>
             <a
               href={`#${item.id}`}
               onClick={(e) => handleClick(e, item.id)}

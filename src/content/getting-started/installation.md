@@ -15,13 +15,13 @@ Get started with the documentation template in minutes.
 
 ## Install Dependencies
 
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 ## Project Structure
 
-\`\`\`
+```
 src/
 ├── components/
 │   ├── ui/          # Base UI components
@@ -33,13 +33,13 @@ src/
 ├── content/         # Your documentation content
 ├── lib/             # Utilities
 └── styles/          # Global styles
-\`\`\`
+```
 
 ## Configuration
 
 Create a configuration file for your documentation:
 
-\`\`\`typescript
+```typescript
 import { DocsConfig } from './config/docs.config';
 
 export const myDocsConfig: DocsConfig = {
@@ -58,4 +58,4 @@ export const myDocsConfig: DocsConfig = {
     },
   ],
 };
-\`\`\`
+```

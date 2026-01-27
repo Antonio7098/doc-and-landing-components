@@ -15,14 +15,12 @@ import {
   Building2,
   Terminal,
   Sparkles,
-  ArrowRight,
 } from 'lucide-react';
 
 // Landing components
 import {
   Container,
   Section,
-  GradientText,
   SectionTitle,
   Hero,
   HeroBadge,
@@ -30,11 +28,9 @@ import {
   FeatureCard,
   FeatureGrid,
   FeatureShowcase,
-  FeatureList,
   IconBox,
   LogoCloud,
   CodeTabs,
-  CodeWindow,
   APIResponse,
   CTASection,
   CTABanner,
@@ -42,7 +38,6 @@ import {
   NavButton,
   TestimonialCard,
   TestimonialGrid,
-  TestimonialHighlight,
   PricingCard,
   PricingGrid,
   Footer,
@@ -120,9 +115,9 @@ export function LandingPage() {
     <div className="min-h-screen bg-background">
       {/* Announcement Banner */}
       <CTABanner
-        variant="gradient"
+        variant="accent"
         action={
-          <a href="#" className="text-white/90 hover:text-white flex items-center gap-1 text-sm font-medium">
+          <a href="#" className="hover:text-foreground flex items-center gap-1 text-sm font-medium">
             Learn more <ChevronRight className="w-4 h-4" />
           </a>
         }
@@ -134,8 +129,8 @@ export function LandingPage() {
       <Navbar
         logo={
           <a href="/" className="flex items-center gap-2 font-bold text-xl">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-purple-600 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-primary-foreground" />
             </div>
             <span>Acme</span>
           </a>
@@ -178,14 +173,20 @@ export function LandingPage() {
       <Hero
         size="xl"
         layout="centered"
+        contentAlign="left"
+        className="pt-20 md:pt-28"
         badge={
-          <HeroBadge variant="gradient" showArrow href="#">
+          <HeroBadge variant="outline" showArrow href="#">
             New: Multi-tenant authentication is here
           </HeroBadge>
         }
-        title="Your app,"
-        titleGradient="Enterprise Ready."
-        titleGradientPreset="cyan-blue"
+        title={(
+          <>
+            Your app,
+            <br />
+            Enterprise Ready.
+          </>
+        )}
         subtitle="Start selling to enterprise customers with just a few lines of code. Implement features like single sign-on in minutes instead of months."
         actions={[
           {
@@ -202,7 +203,7 @@ export function LandingPage() {
           },
         ]}
         backgroundElement={
-          <HeroBackground variant="radial" primaryColor="rgba(6, 182, 212, 0.08)" secondaryColor="rgba(168, 85, 247, 0.08)" />
+          <HeroBackground variant="radial" primaryColor="rgba(0, 0, 0, 0.05)" secondaryColor="rgba(0, 0, 0, 0.05)" />
         }
       />
 
@@ -220,21 +221,19 @@ export function LandingPage() {
         ]}
       />
 
-      {/* Developer-first Section (Dark) */}
-      <Section theme="dark" spacing="xl">
+      {/* Developer-first Section */}
+      <Section theme="muted" spacing="xl">
         <Container>
           <SectionTitle
             label="Developer-first design"
-            labelGradient="cyan-blue"
             title="A unified platform with modern APIs"
             align="center"
             className="mb-16"
-            titleClassName="text-white"
           />
 
           <div className="grid gap-12 lg:grid-cols-2 items-start">
             <div>
-              <p className="text-lg text-gray-400 mb-8">
+              <p className="text-lg text-muted-foreground mb-8">
                 WorkOS provides a single, elegant interface that abstracts dozens of enterprise integrations.
               </p>
 
@@ -284,12 +283,12 @@ export function LandingPage() {
                     <IconBox
                       icon={feature.icon}
                       variant="outlined"
-                      color="cyan"
+                      color="primary"
                       size="md"
                     />
                     <div>
-                      <h4 className="font-medium text-white">{feature.title}</h4>
-                      <p className="text-sm text-gray-400">{feature.description}</p>
+                      <h4 className="font-medium text-foreground">{feature.title}</h4>
+                      <p className="text-sm text-muted-foreground">{feature.description}</p>
                     </div>
                   </div>
                 ))}
@@ -313,7 +312,6 @@ export function LandingPage() {
       {/* All-in-one Section (Light) */}
       <FeatureShowcase
         label="The all-in-one solution"
-        labelGradient="purple-blue"
         title={
           <>
             Enterprise SSO<br />
@@ -351,11 +349,11 @@ export function LandingPage() {
         ]}
         media={
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-3xl blur-3xl" />
+            <div className="absolute inset-0 bg-primary/5 rounded-3xl blur-3xl" />
             <div className="relative bg-card border border-border rounded-2xl p-8 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center">
-                  <Shield className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-2xl flex items-center justify-center">
+                  <Shield className="w-8 h-8 text-primary" />
                 </div>
                 <h3 className="font-semibold text-lg mb-2">Sign in to Super App</h3>
                 <div className="space-y-3 text-left">
@@ -365,11 +363,11 @@ export function LandingPage() {
                       Your email address
                     </div>
                   </div>
-                  <button className="w-full py-2 bg-purple-600 text-white rounded-lg font-medium">
+                  <button className="w-full py-2 bg-primary text-primary-foreground rounded-lg font-medium">
                     Continue
                   </button>
                   <p className="text-xs text-center text-muted-foreground">
-                    Don't have an account? <a href="#" className="text-primary">Get started</a>
+                    Don't have an account? <a href="#" className="text-primary hover:underline">Get started</a>
                   </p>
                 </div>
               </div>
@@ -381,7 +379,6 @@ export function LandingPage() {
       {/* Feature Grid */}
       <FeatureGrid
         label="Additional Products"
-        labelGradient="pink-purple"
         title="Everything you need to scale"
         subtitle="From authentication to audit logs, we've got you covered with enterprise-grade features."
         columns={3}
@@ -421,7 +418,7 @@ export function LandingPage() {
         ].map((feature, index) => (
           <FeatureCard
             key={index}
-            icon={<IconBox icon={feature.icon} variant="gradient" color="purple" />}
+            icon={<IconBox icon={feature.icon} variant="gradient" color="primary" />}
             title={feature.title}
             description={feature.description}
             variant="bordered"
@@ -445,7 +442,6 @@ export function LandingPage() {
       {/* Testimonials */}
       <TestimonialGrid
         label="What our customers say"
-        labelGradient="green-cyan"
         title="Loved by developers worldwide"
         subtitle="See what engineering teams are saying about building with our platform."
         columns={3}
@@ -459,7 +455,7 @@ export function LandingPage() {
               title: 'CTO',
               company: 'TechStartup',
               avatar: (
-                <div className="w-full h-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold">
+                <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
                   SC
                 </div>
               ),
@@ -473,7 +469,7 @@ export function LandingPage() {
               title: 'Lead Engineer',
               company: 'ScaleUp Inc',
               avatar: (
-                <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
+                <div className="w-full h-full bg-secondary flex items-center justify-center text-secondary-foreground font-semibold">
                   MJ
                 </div>
               ),
@@ -487,7 +483,7 @@ export function LandingPage() {
               title: 'Founder',
               company: 'DevTools Co',
               avatar: (
-                <div className="w-full h-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-semibold">
+                <div className="w-full h-full bg-primary text-primary-foreground flex items-center justify-center font-semibold">
                   ER
                 </div>
               ),
@@ -509,7 +505,6 @@ export function LandingPage() {
       <PricingGrid
         id="pricing"
         label="Pricing"
-        labelGradient="sunset"
         title="Simple, transparent pricing"
         subtitle="Start for free, then scale as you grow. No hidden fees."
         columns={3}
@@ -586,7 +581,6 @@ export function LandingPage() {
         variant="card"
         title="Ready to get started?"
         description="Join thousands of companies building enterprise-ready applications with our platform."
-        gradient="cyan-blue"
         actions={[
           { label: 'Start building for free', href: '#', variant: 'primary' },
           { label: 'Talk to sales', href: '#', variant: 'outline' },
@@ -597,8 +591,8 @@ export function LandingPage() {
       <Footer
         logo={
           <a href="/" className="flex items-center gap-2 font-bold text-xl">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-purple-600 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-primary-foreground" />
             </div>
             <span>Acme</span>
           </a>

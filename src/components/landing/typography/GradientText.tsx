@@ -10,6 +10,7 @@ export type GradientPreset =
   | 'blue-purple'
   | 'sunset'
   | 'ocean'
+  | 'gray'
   | 'custom';
 
 const gradientPresets: Record<Exclude<GradientPreset, 'custom'>, string> = {
@@ -21,6 +22,7 @@ const gradientPresets: Record<Exclude<GradientPreset, 'custom'>, string> = {
   'blue-purple': 'from-blue-500 via-purple-500 to-pink-500',
   sunset: 'from-orange-400 via-pink-500 to-purple-600',
   ocean: 'from-cyan-500 via-blue-500 to-indigo-600',
+  gray: 'from-foreground via-foreground/80 to-foreground/60',
 };
 
 export interface GradientTextProps extends HTMLAttributes<HTMLSpanElement> {

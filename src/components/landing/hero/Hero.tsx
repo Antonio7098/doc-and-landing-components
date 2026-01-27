@@ -38,7 +38,7 @@ export interface HeroAction {
   iconPosition?: 'left' | 'right';
 }
 
-export interface HeroProps extends HTMLAttributes<HTMLElement> {
+export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   title: ReactNode;
   titleGradient?: ReactNode;
   titleGradientPreset?: GradientPreset;
@@ -52,6 +52,7 @@ export interface HeroProps extends HTMLAttributes<HTMLElement> {
   backgroundElement?: ReactNode;
   titleClassName?: string;
   subtitleClassName?: string;
+  contentAlign?: 'left' | 'center' | 'right';
 }
 
 const actionVariantStyles: Record<string, string> = {
@@ -78,9 +79,20 @@ export function Hero({
   className,
   titleClassName,
   subtitleClassName,
+  contentAlign = 'center',
   ...props
 }: HeroProps) {
   const styles = sizeStyles[size];
+  const centeredContentAlignment: Record<'left' | 'center' | 'right', string> = {
+    left: 'text-left mr-auto max-w-4xl',
+    center: 'text-center mx-auto max-w-4xl',
+    right: 'text-right ml-auto max-w-4xl',
+  };
+  const centeredActionsAlignment: Record<'left' | 'center' | 'right', string> = {
+    left: 'justify-start',
+    center: 'justify-center',
+    right: 'justify-end',
+  };
 
   const renderTitle = () => (
     <h1
@@ -105,7 +117,7 @@ export function Hero({
   const renderContent = () => (
     <div
       className={cn(
-        layout === 'centered' && 'text-center mx-auto max-w-4xl',
+        layout === 'centered' && centeredContentAlignment[contentAlign],
         layout !== 'centered' && 'max-w-xl'
       )}
     >
@@ -126,7 +138,7 @@ export function Hero({
         <div
           className={cn(
             'mt-8 flex flex-wrap gap-4',
-            layout === 'centered' && 'justify-center'
+            layout === 'centered' && centeredActionsAlignment[contentAlign]
           )}
         >
           {actions.map((action, index) => {

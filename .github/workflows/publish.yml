@@ -1,0 +1,48 @@
+name: Publish documentation-template
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: "Version to publish (must match package.json)"
+        required: false
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build library bundle
+        run: npm run build:lib
+
+      - name: Verify version
+        if: ${{ inputs.release_version != '' }}
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$PKG_VERSION" != "${{ inputs.release_version }}" ]; then
+            echo "package.json version $PKG_VERSION does not match workflow input ${{ inputs.release_version }}"
+            exit 1
+          fi
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public

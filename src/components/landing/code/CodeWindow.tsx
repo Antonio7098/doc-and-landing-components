@@ -2,7 +2,7 @@ import { type HTMLAttributes, type ReactNode, useState } from 'react';
 import { cn } from '../../../lib/utils';
 import { Copy, Check } from 'lucide-react';
 
-export type CodeWindowVariant = 'default' | 'minimal' | 'gradient';
+export type CodeWindowVariant = 'default' | 'minimal' | 'gradient' | 'glass';
 
 export interface CodeWindowProps extends HTMLAttributes<HTMLDivElement> {
   code: string;
@@ -30,6 +30,12 @@ const variantStyles: Record<CodeWindowVariant, { wrapper: string; header: string
     wrapper: 'bg-gradient-to-br from-[#1a1b26] to-[#2d2e42] border border-[#3a3b52] rounded-xl overflow-hidden shadow-2xl',
     header: 'bg-black/20 border-b border-white/5',
     body: '',
+  },
+  glass: {
+    wrapper:
+      'bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-[0_20px_80px_rgba(15,23,42,0.25)]',
+    header: 'bg-white/10 border-b border-white/10',
+    body: 'bg-transparent',
   },
 };
 

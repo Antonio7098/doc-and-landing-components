@@ -66,7 +66,7 @@ export function CTASection({
     return (
       <section className={cn('py-16 md:py-24', className)} {...props}>
         <Container size={containerSize}>
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/20 p-8 md:p-12 lg:p-16">
+          <div className="relative overflow-hidden rounded-2xl bg-muted/50 border border-border p-8 md:p-12 lg:p-16">
             {backgroundElement && (
               <div className="absolute inset-0 -z-10">{backgroundElement}</div>
             )}

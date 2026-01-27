@@ -12,7 +12,7 @@ Learn how to customize the documentation template.
 
 All colors are defined using CSS custom properties in `src/styles/index.css`:
 
-\`\`\`css
+```css
 :root {
   --primary: 221 83% 53%;
   --primary-foreground: 210 40% 98%;
@@ -26,31 +26,31 @@ All colors are defined using CSS custom properties in `src/styles/index.css`:
   --background: 222 47% 6%;
   /* ... dark mode colors */
 }
-\`\`\`
+```
 
 ## Typography
 
 The template uses Inter for body text and JetBrains Mono for code:
 
-\`\`\`css
+```css
 fontFamily: {
   sans: ['Inter', 'system-ui', 'sans-serif'],
   mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
 }
-\`\`\`
+```
 
 ## Component Variants
 
 Components use a variant pattern for easy customization:
 
-\`\`\`typescript
+```typescript
 const buttonVariants: Record<ButtonVariant, string> = {
   default: 'bg-primary text-primary-foreground hover:bg-primary/90',
   secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
   ghost: 'hover:bg-accent hover:text-accent-foreground',
   // Add your own variants here
 };
-\`\`\`
+```
 
 ## Adding New Components
 

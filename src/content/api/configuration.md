@@ -10,7 +10,7 @@ Learn how to configure the documentation template.
 
 ## Basic Configuration
 
-\`\`\`typescript
+```typescript
 import { DocsConfig } from '../config/docs.config';
 
 export const myDocsConfig: DocsConfig = {
@@ -41,7 +41,7 @@ export const myDocsConfig: DocsConfig = {
     copyright: '© 2025 Your Project',
   },
 };
-\`\`\`
+```
 
 ## Configuration Options
 

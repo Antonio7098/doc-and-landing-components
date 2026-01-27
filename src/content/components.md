@@ -14,27 +14,38 @@ The documentation template includes a comprehensive set of components.
 
 A versatile button component with multiple variants.
 
-\`\`\`tsx
-import { Button } from './components/ui';
+=== "TypeScript"
+    ```tsx
+    import { Button } from './components/ui';
 
-<Button variant="default">Default</Button>
-<Button variant="secondary">Secondary</Button>
-<Button variant="ghost">Ghost</Button>
-<Button variant="outline">Outline</Button>
-\`\`\`
+    <Button variant="default">Default</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="outline">Outline</Button>
+    ```
+
+=== "Python"
+    ```python
+    from docs_ui import Button
+
+    Button(variant="default", children="Default")
+    Button(variant="secondary", children="Secondary")
+    Button(variant="ghost", children="Ghost")
+    Button(variant="outline", children="Outline")
+    ```
 
 ### Badge
 
 Display status or labels.
 
-\`\`\`tsx
+```tsx
 import { Badge } from './components/ui';
 
 <Badge>Default</Badge>
 <Badge variant="secondary">Secondary</Badge>
 <Badge variant="success">Success</Badge>
 <Badge variant="warning">Warning</Badge>
-\`\`\`
+```
 
 ## Documentation Components
 
@@ -42,7 +53,7 @@ import { Badge } from './components/ui';
 
 Highlight important information.
 
-\`\`\`tsx
+```tsx
 import { Callout } from './components/docs';
 
 <Callout variant="info">
@@ -52,22 +63,35 @@ import { Callout } from './components/docs';
 <Callout variant="warning" title="Be Careful">
   This action cannot be undone.
 </Callout>
-\`\`\`
+```
 
 ### Code Block
 
 Display code with syntax highlighting.
 
-\`\`\`tsx
-import { CodeBlock } from './components/docs';
+=== "TypeScript"
+    ```tsx
+    import { CodeBlock } from './components/docs';
 
-<CodeBlock
-  code="const hello = 'world';"
-  language="typescript"
-  filename="example.ts"
-  showLineNumbers
-/>
-\`\`\`
+    <CodeBlock
+      code="const hello = 'world';"
+      language="typescript"
+      filename="example.ts"
+      showLineNumbers
+    />
+    ```
+
+=== "Python"
+    ```python
+    from docs_components import CodeBlock
+
+    CodeBlock(
+        code="print('hello, world')",
+        language="python",
+        filename="example.py",
+        show_line_numbers=True,
+    )
+    ```
 
 ## Layout Components
 

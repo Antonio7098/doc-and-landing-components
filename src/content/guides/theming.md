@@ -12,26 +12,26 @@ The template supports light and dark modes out of the box.
 
 Theme state is managed by the `DocsContext`:
 
-\`\`\`typescript
+```typescript
 const { theme, setTheme } = useDocs();
 
 // Toggle theme
 setTheme(theme === 'dark' ? 'light' : 'dark');
-\`\`\`
+```
 
 ## CSS Variables
 
 Colors are defined as HSL values without the `hsl()` wrapper:
 
-\`\`\`css
+```css
 --primary: 221 83% 53%;  /* hue saturation lightness */
-\`\`\`
+```
 
 This allows for easy opacity modifications:
 
-\`\`\`css
+```css
 background: hsl(var(--primary) / 0.5);  /* 50% opacity */
-\`\`\`
+```
 
 ## Customizing Colors
 

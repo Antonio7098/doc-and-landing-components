@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { ChevronRight, Copy, Check } from 'lucide-react';
 import { useDocs } from '../../contexts/DocsContext';
@@ -12,7 +12,7 @@ export interface SidebarProps {
   docs?: DocPage[];
 }
 
-type CopyStatus = 'idle' | 'copied' | 'cooldown' | 'suppressed';
+type CopyStatus = 'idle' | 'copied' | 'cooldown';
 
 function NavItemComponent({ item, depth = 0, docs }: { item: NavItem; depth?: number; docs?: DocPage[] }) {
   const location = useLocation();
@@ -35,8 +35,8 @@ function NavItemComponent({ item, depth = 0, docs }: { item: NavItem; depth?: nu
 
   const handleMouseLeave = () => {
     hoverRef.current = false;
-    if (status === 'suppressed') {
-      setStatus('idle');
+    if (status === 'cooldown') {
+      setTimeout(() => setStatus('idle'), 300);
     }
   };
 
@@ -73,21 +73,10 @@ function NavItemComponent({ item, depth = 0, docs }: { item: NavItem; depth?: nu
     
     setTimeout(() => {
       setStatus('cooldown');
-      setTimeout(() => {
-        if (hoverRef.current) {
-          setStatus('suppressed');
-        } else {
-          setStatus('idle');
-        }
-      }, 150);
+      if (!hoverRef.current) {
+        setTimeout(() => setStatus('idle'), 300);
+      }
     }, 2000);
-  };
-
-  const renderCopyIcon = () => {
-    if (status === 'copied' || status === 'cooldown') {
-      return <Check className="h-3 w-3 text-green-500" />;
-    }
-    return <Copy className="h-3 w-3" />;
   };
 
   if (hasChildren) {
@@ -99,7 +88,7 @@ function NavItemComponent({ item, depth = 0, docs }: { item: NavItem; depth?: nu
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className={cn(
-            'flex w-full items-center justify-between rounded-md px-3 py-2 text-sm transition-colors cursor-pointer group',
+            'flex w-full items-center justify-between rounded-md px-3 py-2 text-sm transition-colors cursor-pointer',
             'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
             depth > 0 && 'pl-6'
           )}
@@ -109,16 +98,18 @@ function NavItemComponent({ item, depth = 0, docs }: { item: NavItem; depth?: nu
             <button
               onClick={handleCopy}
               className={cn(
-                'transition-opacity duration-150 p-1 rounded hover:bg-sidebar-accent/50',
-                status === 'idle' ? 'opacity-0 group-hover:opacity-100' : '',
+                'transition-opacity duration-300 p-1 rounded hover:bg-sidebar-accent/50',
+                status === 'idle' ? 'pointer-events-none opacity-0 hover:opacity-100 group-hover:pointer-events-auto' : '',
                 status === 'copied' ? 'opacity-100' : '',
-                status === 'cooldown' ? 'opacity-0' : '',
-                status === 'suppressed' ? 'opacity-0' : '',
-                status === 'idle' ? 'pointer-events-none group-hover:pointer-events-auto' : 'pointer-events-none'
+                status === 'cooldown' ? 'opacity-0 pointer-events-none' : ''
               )}
               title="Copy section content"
             >
-              {renderCopyIcon()}
+              {status === 'idle' ? (
+                <Copy className="h-3 w-3" />
+              ) : (
+                <Check className="h-3 w-3 text-green-500" />
+              )}
             </button>
             <ChevronRight
               className={cn(
@@ -159,16 +150,18 @@ function NavItemComponent({ item, depth = 0, docs }: { item: NavItem; depth?: nu
         role="button"
         onClick={handleCopy}
         className={cn(
-          'transition-opacity duration-150 ml-auto p-1 rounded hover:bg-sidebar-accent/50 cursor-pointer',
-          status === 'idle' ? 'opacity-0 group-hover:opacity-100' : '',
+          'transition-opacity duration-300 ml-auto p-1 rounded hover:bg-sidebar-accent/50 cursor-pointer',
+          status === 'idle' ? 'pointer-events-none opacity-0 group-hover:opacity-100 group-hover:pointer-events-auto' : '',
           status === 'copied' ? 'opacity-100' : '',
-          status === 'cooldown' ? 'opacity-0' : '',
-          status === 'suppressed' ? 'opacity-0' : '',
-          status === 'idle' ? 'pointer-events-none group-hover:pointer-events-auto' : 'pointer-events-none'
+          status === 'cooldown' ? 'opacity-0 pointer-events-none' : ''
         )}
         title="Copy page content"
       >
-        {renderCopyIcon()}
+        {status === 'idle' ? (
+          <Copy className="h-3 w-3" />
+        ) : (
+          <Check className="h-3 w-3 text-green-500" />
+        )}
       </span>
       {item.badge && (
         <Badge variant="secondary" className="ml-auto">
@@ -219,13 +212,9 @@ export function Sidebar({ className, docs }: SidebarProps) {
       
       setTimeout(() => {
         setStatus('cooldown');
-        setTimeout(() => {
-          if (hoverRef.current) {
-            setStatus('suppressed');
-          } else {
-            setStatus('idle');
-          }
-        }, 150);
+        if (!hoverRef.current) {
+          setTimeout(() => setStatus('idle'), 300);
+        }
       }, 2000);
     };
 
@@ -235,40 +224,33 @@ export function Sidebar({ className, docs }: SidebarProps) {
 
     const handleMouseLeave = () => {
       hoverRef.current = false;
-      if (status === 'suppressed') {
-        setStatus('idle');
+      if (status === 'cooldown') {
+        setTimeout(() => setStatus('idle'), 300);
       }
-    };
-
-    const renderCopyIcon = () => {
-      if (status === 'copied' || status === 'cooldown') {
-        return <Check className="h-3 w-3 text-green-500" />;
-      }
-      return <Copy className="h-3 w-3" />;
     };
 
     return (
-      <div 
-        className="flex items-center justify-between mb-2 px-3 group"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div className="flex items-center justify-between mb-2 px-3">
         <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           {title}
         </h4>
         <button
           onClick={handleCopy}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           className={cn(
-            'transition-opacity duration-150 p-1 rounded hover:bg-sidebar-accent/50',
-            status === 'idle' ? 'opacity-0 group-hover:opacity-100' : '',
+            'transition-opacity duration-300 p-1 rounded hover:bg-sidebar-accent/50',
+            status === 'idle' ? 'pointer-events-none opacity-0 hover:opacity-100 hover:pointer-events-auto' : '',
             status === 'copied' ? 'opacity-100' : '',
-            status === 'cooldown' ? 'opacity-0' : '',
-            status === 'suppressed' ? 'opacity-0' : '',
-            status === 'idle' ? 'pointer-events-none group-hover:pointer-events-auto' : 'pointer-events-none'
+            status === 'cooldown' ? 'opacity-0 pointer-events-none' : ''
           )}
           title="Copy section content"
         >
-          {renderCopyIcon()}
+          {status === 'idle' ? (
+            <Copy className="h-3 w-3" />
+          ) : (
+            <Check className="h-3 w-3 text-green-500" />
+          )}
         </button>
       </div>
     );

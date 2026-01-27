@@ -13,8 +13,8 @@ const spacingStyles: Record<SectionSpacing, string> = {
 };
 
 const themeStyles: Record<SectionTheme, string> = {
-  light: 'bg-white text-gray-900',
-  dark: 'bg-[#0d1117] text-white',
+  light: 'bg-background text-foreground',
+  dark: 'bg-foreground text-background',
   gradient: 'bg-gradient-to-b from-background to-muted',
   muted: 'bg-muted/50',
 };

@@ -1,16 +1,27 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, FileText, X } from 'lucide-react';
+import { Search, FileText, X, Hash } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useDocs } from '../../contexts/DocsContext';
 import { cn } from '../../lib/utils';
 import { Icon } from '../ui/Icon';
 import { Button } from '../ui/Button';
 
-interface SearchResult {
+interface BaseSearchItem {
   title: string;
   href: string;
   section?: string;
   excerpt?: string;
+}
+
+export interface SearchHeadingResult extends BaseSearchItem {
+  type: 'heading';
+  parentTitle: string;
+  headingLevel: number;
+}
+
+export interface SearchResult extends BaseSearchItem {
+  type?: 'doc';
+  headings?: SearchHeadingResult[];
 }
 
 export interface SearchDialogProps {
@@ -21,7 +32,7 @@ export interface SearchDialogProps {
 export function SearchDialog({ results: externalResults, onSearch }: SearchDialogProps) {
   const { searchOpen, setSearchOpen, config } = useDocs();
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [results, setResults] = useState<Array<SearchResult | SearchHeadingResult>>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -32,30 +43,51 @@ export function SearchDialog({ results: externalResults, onSearch }: SearchDialo
       setQuery('');
       setResults([]);
       setSelectedIndex(0);
-      console.log('SearchDialog - searchOpen:', searchOpen);
     }
   }, [searchOpen]);
 
   useEffect(() => {
-    console.log('SearchDialog - query:', query);
-    console.log('SearchDialog - externalResults:', externalResults);
-    console.log('SearchDialog - onSearch:', onSearch);
-    
+    const flattenResults = (
+      items: SearchResult[] | undefined,
+      searchQuery: string
+    ): Array<SearchResult | SearchHeadingResult> => {
+      if (!items) return [];
+      const normalizedQuery = searchQuery.toLowerCase().trim();
+
+      if (!normalizedQuery) {
+        return items.map(item => ({ ...item, type: 'doc' as const }));
+      }
+
+      const filtered: Array<SearchResult | SearchHeadingResult> = [];
+
+      items.forEach(item => {
+        const docMatches =
+          item.title.toLowerCase().includes(normalizedQuery) ||
+          item.excerpt?.toLowerCase().includes(normalizedQuery);
+
+        const headingMatches = (item.headings || []).filter(heading =>
+          heading.title.toLowerCase().includes(normalizedQuery)
+        );
+
+        if (docMatches || headingMatches.length > 0) {
+          filtered.push({ ...item, type: 'doc' as const });
+          headingMatches.forEach(match => filtered.push(match));
+        }
+      });
+
+      return filtered;
+    };
+
     if (query && onSearch) {
-      const searchResults = onSearch(query);
+      const searchResults = flattenResults(onSearch(query), query);
       setResults(searchResults);
       setSelectedIndex(0);
     } else if (externalResults) {
-      const filtered = externalResults.filter(r => 
-        r.title.toLowerCase().includes(query.toLowerCase()) ||
-        r.excerpt?.toLowerCase().includes(query.toLowerCase())
-      );
-      setResults(filtered);
+      const flattened = flattenResults(externalResults, query);
+      setResults(flattened);
       setSelectedIndex(0);
-      console.log('SearchDialog - filtered results:', filtered);
     } else {
       setResults([]);
-      console.log('SearchDialog - no results available');
     }
   }, [query, onSearch, externalResults]);
 
@@ -114,34 +146,45 @@ export function SearchDialog({ results: externalResults, onSearch }: SearchDialo
 
           {results.length > 0 && (
             <div className="max-h-80 overflow-y-auto p-2">
-              {results.map((result, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    navigate(result.href);
-                    setSearchOpen(false);
-                  }}
-                  className={cn(
-                    'flex w-full items-start gap-3 rounded-lg px-3 py-2 text-left transition-colors',
-                    selectedIndex === i
-                      ? 'bg-accent text-accent-foreground'
-                      : 'hover:bg-accent/50'
-                  )}
-                >
-                  <Icon icon={FileText} className="mt-0.5 text-muted-foreground" />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{result.title}</p>
-                    {result.section && (
-                      <p className="text-xs text-muted-foreground">{result.section}</p>
+              {results.map((result, i) => {
+                const isHeading = result.type === 'heading';
+                return (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      navigate(result.href);
+                      setSearchOpen(false);
+                    }}
+                    className={cn(
+                      'flex w-full items-start gap-3 rounded-lg px-3 py-2 text-left transition-colors',
+                      isHeading && 'ml-6 border-l border-border/60 pl-4',
+                      selectedIndex === i
+                        ? 'bg-accent text-accent-foreground'
+                        : 'hover:bg-accent/50'
                     )}
-                    {result.excerpt && (
-                      <p className="text-xs text-muted-foreground truncate mt-0.5">
-                        {result.excerpt}
+                  >
+                    <Icon icon={isHeading ? Hash : FileText} className="mt-0.5 text-muted-foreground" />
+                    <div className="flex-1 min-w-0">
+                      <p className={cn('text-sm truncate', isHeading ? 'font-medium' : 'font-semibold')}>
+                        {result.title}
                       </p>
-                    )}
-                  </div>
-                </button>
-              ))}
+                      {!isHeading && result.section && (
+                        <p className="text-xs text-muted-foreground">{result.section}</p>
+                      )}
+                      {isHeading && 'parentTitle' in result && (
+                        <p className="text-xs text-muted-foreground">
+                          {(result as SearchHeadingResult).parentTitle}
+                        </p>
+                      )}
+                      {!isHeading && result.excerpt && (
+                        <p className="text-xs text-muted-foreground truncate mt-0.5">
+                          {result.excerpt}
+                        </p>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           )}
 

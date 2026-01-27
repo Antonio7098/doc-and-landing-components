@@ -20,7 +20,7 @@ This is a **beautiful, modular documentation template** built with React, TypeSc
 
 ## Quick Example
 
-\`\`\`typescript
+```typescript
 import { DocsProvider, DocPage } from 'documentation-template';
 import { myDocsConfig } from './config';
 
@@ -31,7 +31,7 @@ function App() {
     </DocsProvider>
   );
 }
-\`\`\`
+```
 
 ## Getting Started
 
