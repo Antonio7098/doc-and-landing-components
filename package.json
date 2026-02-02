@@ -2,6 +2,10 @@
   "name": "documentation-template",
   "version": "1.0.1",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Antonio7098/doc-and-landing-components"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
